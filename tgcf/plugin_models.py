@@ -81,21 +81,35 @@ class Caption(BaseModel):
     header: str = ""
     footer: str = ""
 
+class Unique(BaseModel):
+    check: bool = False
+
 class Sender(BaseModel):
     check: bool = False
     user_type: int = 0  # 0:bot, 1:user
     BOT_TOKEN: str = ""
     SESSION_STRING: str = ""
 
+
+class GsheetLogger(BaseModel):
+    check: bool = False
+    prefix: str = ""
+    service_account_json: str = ""
+    gsheet_link: str = ""
+
+
 class PluginConfig(BaseModel):
+    alias: str = ""
     filter: Filters = Filters()
     fmt: Format = Format()
     mark: MarkConfig = MarkConfig()
     ocr: OcrConfig = OcrConfig()
     replace: Replace = Replace()
     caption: Caption = Caption()
+    unique: Unique = Unique()
     sender: Sender = Sender()
+    gsheet_logger: GsheetLogger = GsheetLogger()
 
 
 # List of plugins that need to load asynchronously
-ASYNC_PLUGIN_IDS = ['sender']
+ASYNC_PLUGIN_IDS = ["sender", "gsheet_logger"]
