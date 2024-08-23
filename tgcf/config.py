@@ -17,7 +17,7 @@ from tgcf.plugin_models import PluginConfig
 
 pwd = os.getcwd()
 env_file = os.path.join(pwd, ".env")
-
+CONFIG_MAP_FILE = "/app/tgcf.configmap.json"
 load_dotenv(env_file)
 
 
@@ -137,6 +137,18 @@ def detect_config_type() -> int:
         return 2
     if CONFIG_FILE_NAME in os.listdir():
         logging.info(f"{CONFIG_FILE_NAME} detected!")
+        return 1
+
+    if not os.path.exists(CONFIG_FILE_NAME) and os.path.exists(CONFIG_MAP_FILE):
+        logging.info(f"Config file found in ConfigMap: {CONFIG_MAP_FILE}")
+        # Read the contents of the config from the ConfigMap file
+        with open(CONFIG_MAP_FILE, 'r') as cm_file:
+            config_data = cm_file.read()
+        
+        # Write the config data to the local config file
+        with open(CONFIG_FILE_NAME, 'w') as local_file:
+            local_file.write(config_data)
+        logging.info(f"Config data written to local file: {CONFIG_FILE_NAME}")
         return 1
 
     else:

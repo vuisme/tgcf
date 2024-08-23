@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tgcf-deployment
+  namespace: ittools
+  labels:
+    app: tgcf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tgcf
+  template:
+    metadata:
+      labels:
+        app: tgcf
+    spec:
+      containers:
+        - name: tgcf
+          image: cpanel10x/tgcf
+          ports:
+            - containerPort: 8501
+          imagePullPolicy: Always
+          env:
+            - name: PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: tgcf-config
+                  key: PASSWORD
+          volumeMounts:
+            - name: tgcf-env
+              mountPath: /app/tgcf.config.json
+              subPath: tgcf.config.json
+      volumes:
+        - name: tgcf-env
+          configMap:
+            name: tgcf-config
+      restartPolicy: Always
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+
