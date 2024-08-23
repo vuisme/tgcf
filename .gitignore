@@ -2,6 +2,7 @@
 *.session-journal
 t.py
 tgcf.config.yml
+tgcf.config.json
 .vscode
 foo.py
 bar.py

@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  tgcf:
+    image: cpanel10x/tgcf:latest
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    networks:
+      - tgbot
+    restart: unless-stopped
+
+  binbase:
+    image: cpanel10x/binbase:latest
+    ports:
+      - "5979:5000"
+    networks:
+      - tgbot
+    restart: unless-stopped
+
+networks:
+  tgbot:
+    driver: bridge
