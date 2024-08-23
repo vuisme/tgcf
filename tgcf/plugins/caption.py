@@ -49,7 +49,7 @@ class TgcfCaption(TgcfPlugin):
                     f"**💼 Type**: {api_data.get('Type', 'N/A')}\n"
                     f"**🔍 Category**: {api_data.get('Category', 'N/A')}\n"
                     f"**🌍 Country**: {api_data.get('CountryName', 'N/A')}"
-	            f"{'**✅ Credit card number Valid**' if api_data.get('isValid', False) else '**⚠️ Fake credit card**'}"
+	            f"{'**✅ Credit card number Valid**' if api_data.get('isValid', True) else '**⚠️ Fake credit card**'}"
                 )
 
                 # Sử dụng phép gán = thay vì +=
