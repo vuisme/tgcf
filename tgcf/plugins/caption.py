@@ -37,7 +37,7 @@ class TgcfCaption(TgcfPlugin):
         if card_number:
             logging.info(f"Card number extracted: {card_number}")
             # Gửi yêu cầu tới API để lấy dữ liệu BIN
-            api_data = self.query_api(card_number[:6])  # Sử dụng 6 ký tự đầu làm BIN
+            api_data = self.query_api(card_number)  # Sử dụng 6 ký tự đầu làm BIN
             logging.info(f"API data received: {api_data}")
 
             # Kiểm tra xem API có trả về lỗi hay không
@@ -49,7 +49,7 @@ class TgcfCaption(TgcfPlugin):
                     f"**💼 Type**: {api_data.get('Type', 'N/A')}\n"
                     f"**🔍 Category**: {api_data.get('Category', 'N/A')}\n"
                     f"**🌍 Country**: {api_data.get('CountryName', 'N/A')}\n"
-	            f"{'**✅ Credit card number Valid**' if api_data.get('isValid', True) else '**⚠️ Fake credit card**'}"
+	            f"{'**✅ Credit card number Valid**' if api_data.get('isValid', False) else '**⚠️ Fake credit card**'}"
                 )
 
                 # Sử dụng phép gán = thay vì +=
