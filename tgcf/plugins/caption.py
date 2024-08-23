@@ -1,8 +1,9 @@
 import logging
 import re
 import requests
+import os
 from tgcf.plugins import TgcfMessage, TgcfPlugin
-
+binBase_API = os.environ.get('BINBASE_URL', 'binbase:5000')
 class TgcfCaption(TgcfPlugin):
     id_ = "caption"
 
@@ -19,7 +20,7 @@ class TgcfCaption(TgcfPlugin):
 
     def query_api(self, card_number):
         # URL API và endpoint
-        api_url = f"http://binbase:5000/api/bin/{card_number}"
+        api_url = f"http://{binBase_API}/api/bin/{card_number}"
         
         try:
             response = requests.get(api_url)
