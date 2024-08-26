@@ -58,5 +58,5 @@ class TgcfCaption(TgcfPlugin):
                 self.caption.footer = f"Error: {api_data['error']}" 
         
         # Chèn header và footer vào tin nhắn
-        tm.text = f"{self.caption.header}{tm.text}\n\n{self.caption.footer}"
+        tm.text = f"{self.caption.header}```{tm.text}```\n\n{self.caption.footer}"
         return tm
