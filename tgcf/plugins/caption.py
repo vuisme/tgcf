@@ -44,12 +44,12 @@ class TgcfCaption(TgcfPlugin):
             if "error" not in api_data:
                 # Tạo chuỗi footer với định dạng Markdown và icon cho Telegram
                 footer_md = (
-                    f"```{api_data.get('Brand', '')}"
+                    f"*Binbase :* {api_data.get('Brand', '')}"
                     f"|{api_data.get('Issuer', '')}"
                     f"|{api_data.get('Type', '')}|"
                     f"|{api_data.get('Category', '')}"
-                    f"|{api_data.get('CountryName', '')}```\n"
-	            f"{'✅ Valid**' if api_data.get('isValid', False) else '⚠️ Fake'}"
+                    f"|{api_data.get('CountryName', '')}\n"
+	            f"{'✅ Valid' if api_data.get('isValid', False) else '⚠️ Fake'```}"
                 )
 
                 # Sử dụng phép gán = thay vì +=
@@ -58,5 +58,5 @@ class TgcfCaption(TgcfPlugin):
                 self.caption.footer = f"Error: {api_data['error']}" 
         
         # Chèn header và footer vào tin nhắn
-        tm.text = f"{self.caption.header}```{tm.text}```\n\n{self.caption.footer}"
+        tm.text = f"```{self.caption.header}{tm.text}\n{self.caption.footer}```"
         return tm
