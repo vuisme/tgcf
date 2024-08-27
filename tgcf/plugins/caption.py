@@ -46,8 +46,8 @@ class TgcfCaption(TgcfPlugin):
                     f"|{api_data.get('Issuer', '')}"
                     f"|{api_data.get('Type', '')}|"
                     f"|{api_data.get('Category', '')}"
-                    f"|{api_data.get('CountryName', '')}\n"
-	            f"{'✅ Valid' if api_data.get('isValid', False) else '⚠️ Fake'}"
+                    f"|{api_data.get('CountryName', '')}|"
+	            f"{'Valid' if api_data.get('isValid', False) else '⚠️ Fake'}"
                 )
 
                 # Sử dụng phép gán = thay vì +=
