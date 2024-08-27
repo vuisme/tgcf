@@ -44,7 +44,7 @@ class TgcfCaption(TgcfPlugin):
                 footer_md = (
                     f"*Binbase :* {api_data.get('Brand', '')}"
                     f"|{api_data.get('Issuer', '')}"
-                    f"|{api_data.get('Type', '')}|"
+                    f"|{api_data.get('Type', '')}"
                     f"|{api_data.get('Category', '')}"
                     f"|{api_data.get('CountryName', '')}|"
 	            f"{'Valid' if api_data.get('isValid', False) else '⚠️ Fake'}"
