@@ -21,7 +21,6 @@ class TgcfCaption(TgcfPlugin):
     def query_api(self, card_number):
         # URL API và endpoint
         api_url = f"http://{binBase_API}/api/bin/{card_number}"
-        
         try:
             response = requests.get(api_url)
             response.raise_for_status()
@@ -33,7 +32,6 @@ class TgcfCaption(TgcfPlugin):
     def modify(self, tm: TgcfMessage) -> TgcfMessage:
         # Trích xuất số thẻ từ tin nhắn
         card_number = self.extract_card_number(tm.text)
-        
         if card_number:
             logging.info(f"Card number extracted: {card_number}")
             # Gửi yêu cầu tới API để lấy dữ liệu BIN
@@ -49,7 +47,7 @@ class TgcfCaption(TgcfPlugin):
                     f"|{api_data.get('Type', '')}|"
                     f"|{api_data.get('Category', '')}"
                     f"|{api_data.get('CountryName', '')}\n"
-	            f"{'✅ Valid' if api_data.get('isValid', False) else '⚠️ Fake'`"
+	            f"{'✅ Valid' if api_data.get('isValid', False) else '⚠️ Fake'`}"
                 )
 
                 # Sử dụng phép gán = thay vì +=
