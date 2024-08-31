@@ -1,44 +1,64 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tgcf-deployment
-  namespace: ittools
   labels:
     app: tgcf
+    app.kubernetes.io/instance: tgcfbot
+    k8slens-edit-resource-version: v1
+  name: tgcf-deployment
+  namespace: ittools
 spec:
+  progressDeadlineSeconds: 600
   replicas: 1
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
       app: tgcf
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
   template:
     metadata:
       labels:
         app: tgcf
     spec:
       containers:
-        - name: tgcf
-          image: cpanel10x/tgcf
-          ports:
-            - containerPort: 8501
-          imagePullPolicy: Always
-          env:
+        - env:
             - name: PASSWORD
               valueFrom:
                 configMapKeyRef:
-                  name: tgcf-config
                   key: PASSWORD
+                  name: tgcf-config
+            - name: BINBASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: BINBASE_URL
+                  name: tgcf-config
+          image: cpanel10x/tgcf
+          imagePullPolicy: Always
+          name: tgcf
+          ports:
+            - containerPort: 8501
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
           volumeMounts:
-            - name: tgcf-env
-              mountPath: /app/tgcf.config.json
+            - mountPath: /app/tgcf.config.json
+              name: tgcf-env
               subPath: tgcf.config.json
-      volumes:
-        - name: tgcf-env
-          configMap:
-            name: tgcf-config
+            - mountPath: /app/tgcf.configmap.json
+              name: tgcf-env
+              subPath: tgcf.configmap.json
+      dnsPolicy: ClusterFirst
       restartPolicy: Always
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 25%
-      maxSurge: 25%
-
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: tgcf-config
+          name: tgcf-env
