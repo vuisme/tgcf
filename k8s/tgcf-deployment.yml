@@ -46,9 +46,6 @@ spec:
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           volumeMounts:
-            - mountPath: /app/tgcf.config.json
-              name: tgcf-env
-              subPath: tgcf.config.json
             - mountPath: /app/tgcf.configmap.json
               name: tgcf-env
               subPath: tgcf.configmap.json
@@ -62,3 +59,4 @@ spec:
             defaultMode: 420
             name: tgcf-config
           name: tgcf-env
+
