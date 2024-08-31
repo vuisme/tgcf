@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  name: tgfc-ingress
+  namespace: ittools
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: tg.vutn.net
+      http:
+        paths:
+          - backend:
+              service:
+                name: tgcf-svc
+                port:
+                  number: 8501
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - tg.vutn.net
+      secretName: tgcf-tls
