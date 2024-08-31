@@ -14,12 +14,24 @@ CONFIG = read_config()
 
 def termination(agent_id:int):
     st.code("process terminated!")
-    os.rename(f"logs_{i}.txt", f"old_logs_{i}.txt")
-    with open("old_logs.txt", "r") as f:
-        st.download_button(
-            "Download last logs", data=f.read(), file_name=f"tgcf_logs_{i}.txt"
-        )
+    # Replace 'i' with 'agent_id' since the parameter is passed as 'agent_id'
+    log_file = f"logs_{agent_id}.txt"
+    old_log_file = f"old_logs_{agent_id}.txt"
+    
+    # Rename the log file safely
+    if os.path.exists(log_file):
+        os.rename(log_file, old_log_file)
+    else:
+        st.warning(f"No log file found for agent {agent_id}.")
 
+    # Read and provide the download button only if the old log file exists
+    if os.path.exists(old_log_file):
+        with open(old_log_file, "r") as f:
+            st.download_button(
+                "Download last logs", data=f.read(), file_name=f"tgcf_logs_{agent_id}.txt"
+            )
+    else:
+        st.warning("No old log file available to download.")
     CONFIG = read_config()
     CONFIG.agent_fwd_cfg[i].pid= 0
     write_config(CONFIG)
