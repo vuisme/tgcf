@@ -43,3 +43,30 @@ spec:
       port: 5000
       targetPort: 5000
   type: NodePort
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  name: binbase-ingress
+  namespace: ittools
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: binbase.vutn.net
+      http:
+        paths:
+          - backend:
+              service:
+                name: binbase-svc
+                port:
+                  number: 5000
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - binbase.vutn.net
+      secretName: binbase-tls
